@@ -5,11 +5,11 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "mediatrace"
 version = "0.1.0"
-description = "Smart file organizer with content-based type detection, plus a unified API to fetch and clean media from public platforms."
+description = "Smart file organizer with content-based file type detection, plus one clean API to download media from YouTube, TikTok, Instagram, X and 1,000+ sites, with metadata stripped and safe filenames."
 readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "MIT" }
-authors = [{ name = "mediatrace contributors" }]
+authors = [{ name = "Nhyirahagan" }]
 keywords = ["file-organizer", "mime", "magic-bytes", "media-downloader", "yt-dlp", "metadata"]
 classifiers = [
     "Programming Language :: Python :: 3",
@@ -20,6 +20,11 @@ classifiers = [
     "Typing :: Typed",
 ]
 dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/Nhyirahagan/mediatrace"
+Issues = "https://github.com/Nhyirahagan/mediatrace/issues"
+Changelog = "https://github.com/Nhyirahagan/mediatrace/blob/main/CHANGELOG.md"
 
 [project.optional-dependencies]
 media = ["yt-dlp>=2024.1.0"]
