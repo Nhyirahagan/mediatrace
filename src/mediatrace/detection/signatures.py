@@ -449,11 +449,31 @@ def _bzip2(probe: Probe) -> TypeMatch | None:
     return None
 
 
+def _looks_like_utf16le(data: bytes) -> bool:
+    body = data[2:] if data.startswith(b"\xff\xfe") else data
+    body = body[: len(body) - len(body) % 2]
+    if len(body) < 2:
+        return False
+    try:
+        text = body.decode("utf-16-le")
+    except UnicodeDecodeError:
+        return False
+    printable = sum(ch.isprintable() or ch in "\r\n\t" for ch in text)
+    return printable / len(text) > 0.95
+
+
 def _mpeg_audio(probe: Probe) -> TypeMatch | None:
-    head = probe.read_at(0, 2)
+    head = probe.read_at(0, 3)
     if len(head) < 2 or head[0] != 0xFF or (head[1] & 0xE0) != 0xE0:
         return None
+    # FF FE is also the UTF-16 LE byte-order mark; don't mistake BOM-prefixed
+    # text for a Layer I frame.
+    if head[1] == 0xFE and _looks_like_utf16le(probe.read_at(0, 512)):
+        return None
     layer = (head[1] >> 1) & 0b11
+    # Frame headers with a "bad" bitrate index or reserved sample rate are invalid.
+    if layer and len(head) == 3 and ((head[2] >> 4) == 0xF or ((head[2] >> 2) & 0b11) == 0b11):
+        return None
     if layer == 0 and (head[1] & 0xF6) == 0xF0:
         return match("aac", "AAC audio (ADTS)", 0.75)
     if layer == 1:

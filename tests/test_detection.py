@@ -112,6 +112,13 @@ def test_utf16_text(detector):
     assert result.category is Category.TEXT
 
 
+def test_mpeg_audio_frames_still_detected(detector):
+    # MPEG-1 Layer III, 128 kbps, 44.1 kHz frame header followed by frame data.
+    assert detector.detect_bytes(b"\xff\xfb\x90\x00" + b"\x00" * 500).extension == "mp3"
+    # A header with the invalid bitrate index 0b1111 is not an MPEG frame.
+    assert detector.detect_bytes(b"\xff\xfb\xf0\x00" + b"\x00" * 50).category is not Category.AUDIO
+
+
 def test_elf_has_no_canonical_extension(detector):
     result = detector.detect_bytes(ELF, "mytool")
     assert result.category is Category.EXECUTABLE

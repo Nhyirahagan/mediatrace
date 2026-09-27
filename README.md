@@ -16,6 +16,8 @@ pip install "mediatrace[all]"
 
 `ffmpeg` on `PATH` (or `MEDIATRACE_FFMPEG`) enables merging video and audio, extracting audio, and stripping audio/video metadata.
 
+For YouTube, recent yt-dlp versions also want a JavaScript runtime ([Deno](https://deno.com)) on `PATH`. Without one, downloads still work but some formats may be missing and yt-dlp prints a warning.
+
 ## File type detection
 
 ```python
