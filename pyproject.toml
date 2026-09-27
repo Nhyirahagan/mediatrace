@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mediatrace"
+version = "0.1.0"
+description = "Smart file organizer with content-based type detection, plus a unified API to fetch and clean media from public platforms."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "mediatrace contributors" }]
+keywords = ["file-organizer", "mime", "magic-bytes", "media-downloader", "yt-dlp", "metadata"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Operating System :: OS Independent",
+    "Topic :: System :: Filesystems",
+    "Topic :: Multimedia",
+    "Typing :: Typed",
+]
+dependencies = []
+
+[project.optional-dependencies]
+media = ["yt-dlp>=2024.1.0"]
+images = ["Pillow>=10.0"]
+magic = ["python-magic>=0.4.27"]
+all = ["yt-dlp>=2024.1.0", "Pillow>=10.0"]
+dev = ["pytest>=8.0", "Pillow>=10.0"]
+
+[project.scripts]
+mediatrace = "mediatrace.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+mediatrace = ["py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"

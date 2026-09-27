@@ -1,0 +1,39 @@
+# Example rules for `mediatrace organize --rules rules.example.toml`
+# Rules are tried highest priority first; the first match wins.
+
+[[rules]]
+name = "screenshots"
+categories = ["image"]
+name_pattern = "^(screenshot|screen shot)"
+destination = "Screenshots/{year}-{month}"
+priority = 30
+
+[[rules]]
+name = "photos"
+categories = ["image"]
+destination = "Photos/{year}/{month}"
+rename = "{date}_{stem}"
+priority = 20
+
+[[rules]]
+name = "big-videos"
+categories = ["video"]
+min_size = "500MB"
+destination = "Videos/Large"
+priority = 15
+
+[[rules]]
+name = "installers"
+categories = ["executable", "disk_image"]
+destination = "Installers"
+priority = 10
+
+[[rules]]
+name = "leave-torrents"
+action = "skip"
+extensions = ["torrent"]
+priority = 10
+
+[[rules]]
+name = "everything-else"
+destination = "{category}"
